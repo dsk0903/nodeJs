@@ -17,3 +17,6 @@ promise
   .finally(() => { // 끝나고 무조건 실행
     console.log('무조건');
   });
+
+
+  
