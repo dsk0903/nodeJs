@@ -5,4 +5,8 @@ console.log(this === exports);
 function whatIsThis() {
   console.log('function', this === exports, this === global);
 }
+
+
+
+
 whatIsThis();

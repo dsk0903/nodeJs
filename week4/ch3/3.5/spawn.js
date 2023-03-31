@@ -1,6 +1,6 @@
 const spawn = require('child_process').spawn;
 
-var process = spawn('python', ['test.py']);
+var process = spawn('python', ['./ch3/3.5/test.py']);
 
 process.stdout.on('data', function(data) {
   console.log(data.toString());

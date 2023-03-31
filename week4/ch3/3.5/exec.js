@@ -1,4 +1,4 @@
-const exec = require('child_process').exec;
+const {exec} = require('child_process');
 
 var process = exec('dir');
 
