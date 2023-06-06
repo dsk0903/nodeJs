@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>simple chat</title>
+        <script src="/socket.io/socket.io.js"></script>
+        <script>
+            let socket;
+            window.onload = () => {
+            	// socket 연결
+                socket = io.connect('/');
+
+			// message 수신 이벤트
+                socket.on('message', data => {
+                    makeChatDiv(data.name, data.content, data.date);
+                });
+            }
+
+			// 버튼 클릭 시 메시지 송신
+            const sendMessage = () => {
+                let name = document.getElementById('name').value;
+                let content = document.getElementById('content').value;
+                
+                document.getElementById('name').value = '';
+                document.getElementById('content').value = '';
+
+                socket.emit('message', {
+                    name,
+                    content,
+                    date: new Date()
+                });
+            }
+
+			// message 수신 시 채팅 컴포넌트 생성
+            const makeChatDiv = (name, content, date) => {
+                let div = document.createElement('div');
+                let nameH3 = document.createElement('h3');
+                let contentP = document.createElement('p');
+                let dateP = document.createElement('p');
+                let timeP = document.createElement('p');
+
+                let yyyyMMdd = String(date);
+                let year = yyyyMMdd.substring(0, 4);
+                let month = yyyyMMdd.substring(5, 7);
+                let day = yyyyMMdd.substring(8, 10);
+                let hour = yyyyMMdd.substring(11, 13);
+                let minute = yyyyMMdd.substring(14, 16);
+
+                nameH3.innerHTML = "작성자 : " + name;
+                contentP.innerHTML = content;
+                dateP.innerHTML = year + "년 " + month + "월 " + day + "일";
+                timeP.innerHTML = hour + "시 " + minute + "분"
+
+                div.appendChild(nameH3);
+                div.appendChild(contentP);
+                div.appendChild(dateP);
+                div.appendChild(timeP)
+
+                div.className = "chat"
+
+                document.getElementById('chatbox').prepend(div);
+            }
+        </script>
+        <style>
+            .chat {
+                border: 1px solid black;
+                width: 400px;
+            }
+            .content {
+                height: 100px;
+                width: 500px;
+                resize: none;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>websocket활용 간단한 채팅 웹앱</h1>
+        <div>
+            <input id="name" type="text" placeholder="닉네임" />
+        </div>
+        <br>
+        <div>
+            <textarea id="content" class="content" placeholder="내용"></textarea>
+        </div>
+        <button onclick="sendMessage()">보내기</button>
+
+        <hr />
+
+        <div id="chatbox">
+
+        </div>
+    </body>
+</html>
